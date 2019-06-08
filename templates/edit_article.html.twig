@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main page{% endblock %}
+
+{% block body %}
+    <form method="POST" action="/{{ article.name }}/edit-submit">
+        <input type="hidden" name="id" value="{{ article.id }}">
+        <input type="text" name="name" value="{{ article.name }}"><br>
+        <input type="text" name="title" value="{{ article.title }}"><br>
+        <textarea name="text" id="article-text" cols="30" rows="10">
+            {{ article.text }}
+        </textarea><br>
+        <input type="submit"><br>
+    </form>
+{% endblock %}

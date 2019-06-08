@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main page{% endblock %}
+
+{% block body %}
+    <a href="/add">Добавить новую страницу</a><br>
+    {% if allArticles %}
+        {% for article in allArticles %}
+            <li>
+                <a href="/{{ article.getName()|e }}">{{ article.getName()|e }}</a>
+                <a href="{{ article.getName()|e }}/edit">Редактировать</a>
+                /
+                <a href="{{ article.getName()|e }}/delete">Удалить</a>
+            </li>
+        {% endfor %}
+    {% else %}
+        <h2>Страницы отсутствуют</h2>
+    {% endif %}
+{% endblock %}

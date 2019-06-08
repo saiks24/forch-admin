@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main page{% endblock %}
+
+{% block body %}
+    <form method="POST" action="/add-article">
+        <input type="text" name="name"><br>
+        <input type="text" name="title"><br>
+        <textarea name="text" id="article-text" cols="30" rows="10"></textarea><br>
+        <input type="submit"><br>
+    </form>
+{% endblock %}
