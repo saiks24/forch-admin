@@ -3,10 +3,27 @@
 {% block title %}Main page{% endblock %}
 
 {% block body %}
+    <h1>Добавление новой страницы</h1>
     <form method="POST" action="/add-article">
-        <input type="text" name="name"><br>
-        <input type="text" name="title"><br>
-        <textarea name="text" id="article-text" cols="30" rows="10"></textarea><br>
-        <input type="submit"><br>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Имя страницы</label>
+            <input class="form-control" name="name" placeholder="Название">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Заголовок страницы</label>
+            <input name="title" class="form-control" placeholder="Заголовок">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Содержимое страницы</label>
+            <textarea name="text" class="form-control" rows="5">
+            </textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    {#<form method="POST" action="/add-article">#}
+        {#<input type="text" name="name"><br>#}
+        {#<input type="text" name="title"><br>#}
+        {#<textarea name="text" id="article-text" cols="30" rows="10"></textarea><br>#}
+        {#<input type="submit"><br>#}
+    {#</form>#}
 {% endblock %}
