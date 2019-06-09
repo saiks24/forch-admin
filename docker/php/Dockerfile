@@ -3,7 +3,6 @@ FROM php:7.1-fpm
 # Install recommended extensions for Symfony
 RUN apt-get update && apt-get install -y \
         libicu-dev \
-        mysql-client \
     && docker-php-ext-install \
         intl \
         opcache \
@@ -14,3 +13,7 @@ RUN apt-get update && apt-get install -y \
         opcache \
         pdo \
         pdo_mysql \
+
+RUN curl -sS https://getcomposer.org/installer | php \
+    &&mv composer.phar /usr/local/bin/composer \
+    &&ln -s /usr/local/bin/composer /usr/bin/composer
