@@ -4,26 +4,61 @@
 
 {% block body %}
     <h1>Добавление новой страницы</h1>
-    <form method="POST" action="/add-article">
+    <form method="POST" action="/add-article" id="add-new-article" role="form" data-toggle="validator">
         <div class="form-group">
             <label for="exampleInputEmail1">Имя страницы</label>
-            <input class="form-control" name="name" placeholder="Название">
+            <input id="name" class="form-control" name="name" placeholder="Название" pattern="[a-zA-Z0-9_]">
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Заголовок страницы</label>
-            <input name="title" class="form-control" placeholder="Заголовок">
+            <input id="title" name="title" class="form-control" placeholder="Заголовок">
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Содержимое страницы</label>
-            <textarea name="text" class="form-control" rows="5">
+            <textarea id="text" name="text" class="form-control" rows="5">
             </textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    {#<form method="POST" action="/add-article">#}
-        {#<input type="text" name="name"><br>#}
-        {#<input type="text" name="title"><br>#}
-        {#<textarea name="text" id="article-text" cols="30" rows="10"></textarea><br>#}
-        {#<input type="submit"><br>#}
-    {#</form>#}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            $('#add-new-article').bootstrapValidator({
+                message: 'Введены некорректные данные',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    name: {
+                        message: 'Поле название страницы заполнено не правильно',
+                        validators: {
+                            notEmpty: {
+                                message: 'Поле: название страницы не может быть пустым'
+                            },
+                            regexp: {
+                                regexp: /^[a-zA-Z0-9_]+$/,
+                                message: 'Поле: название страницы может содрежать только буквы латинского алфавита, цифры и знак: _'
+                            }
+                        }
+                    },
+                    title: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Поле: заголвоок страницы не может быть пустым'
+                            }
+                        }
+                    },
+                    text: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Поле: текст не может быть пустым'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}

@@ -29,6 +29,14 @@ class ArticleController extends AbstractController
      */
     public function addArticleSubmit(Request $request): Response
     {
+        if($this->isInRequestSetAllNeedleFields($request,['text','title','name']) === false) {
+            $this->addFlash(
+                'warning',
+                'Не заполнены все нужные поля'
+            );
+            return $this->redirect('/add');
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $newArticle = new Article();
@@ -38,6 +46,11 @@ class ArticleController extends AbstractController
 
         $em->persist($newArticle);
         $em->flush();
+
+        $this->addFlash(
+            'success',
+            'Страница: ' . $newArticle->getName() . ' успешно добавлена'
+        );
 
         return $this->redirect('/'.$newArticle->getName());
     }
@@ -51,6 +64,10 @@ class ArticleController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $needleArticle = $em->getRepository(Article::class)
             ->findOneBy(['name' => $articleName]);
+
+        if($needleArticle === null) {
+            return new Response('Страница отсутвует',404);
+        }
 
         return $this->render('article_index.html.twig',['article'=>$needleArticle]);
     }
@@ -88,6 +105,10 @@ class ArticleController extends AbstractController
 
         $needleArticle = $repository->findOneBy(['name' => $articleName]);
 
+        if($needleArticle === null) {
+            return new Response('Страница отсутвует',404);
+        }
+
         return $this->render(
             'edit_article.html.twig',
             [
@@ -104,18 +125,34 @@ class ArticleController extends AbstractController
      */
     public function editArticle(Request $request): Response
     {
+        if($this->isInRequestSetAllNeedleFields($request,['id','text','title','name']) === false) {
+            $this->addFlash(
+                'warning',
+                'Не заполнены все нужные поля'
+            );
+            return $this->redirect('/');
+        }
+
         $articleId = $request->get('id');
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository(Article::class);
 
         /** @var Article $needleArticle */
         $needleArticle = $repository->find($articleId);
+        if($needleArticle === null) {
+            return new Response('Страница отсутвует',404);
+        }
         $needleArticle->setTitle($request->get('title'))
             ->setText($request->get('text'))
             ->setName($request->get('name'));
 
         $em->persist($needleArticle);
         $em->flush();
+
+        $this->addFlash(
+            'success',
+            'Страница: ' . $needleArticle->getName() . ' успешно отредактирована'
+        );
 
         return $this->redirect('/'.$needleArticle->getName());
     }
@@ -132,9 +169,39 @@ class ArticleController extends AbstractController
         $repository = $em->getRepository(Article::class);
 
         $needleArticle = $repository->findOneBy(['name' => $articleName]);
+
+        if($needleArticle === null) {
+            return new Response('Страница отсутвует',404);
+        }
+
         $em->remove($needleArticle);
         $em->flush();
 
+        $this->addFlash(
+            'success',
+            'Страница: ' . $needleArticle->getName() . ' успешно удалена'
+        );
+
         return $this->redirect('/');
+    }
+
+    /**
+     * @param Request $request
+     * @param array $fieldsToCheck
+     * @return bool
+     */
+    private function isInRequestSetAllNeedleFields(Request $request, array $fieldsToCheck): bool
+    {
+        if(empty($fieldsToCheck)) {
+            return true;
+        }
+
+        foreach ($fieldsToCheck as $fieldToCheck) {
+            $fieldValue = $request->get($fieldToCheck);
+            if($fieldValue === null || empty($fieldValue)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
