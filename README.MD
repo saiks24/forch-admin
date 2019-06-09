@@ -11,7 +11,7 @@ docker-compose.yml - docker-compose instruction
 -------------
 Start
 ```docker-compose up -d
-docker exec -t {php-fpm-container-id} /bin/bash
+docker exec -ti {php-fpm-container-id} /bin/bash
 composer install 
 ```
 Doctrine init
