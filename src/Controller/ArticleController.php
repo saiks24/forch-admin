@@ -58,8 +58,10 @@ class ArticleController extends AbstractController
     /**
      * @Route("/{articleName}", name="get_article_by_name",methods={"GET"})
      * @param string $articleName
+     *
+     * @return Response
      */
-    public function getArticle(string $articleName)
+    public function getArticle(string $articleName): Response
     {
         $em = $this->getDoctrine()->getManager();
 
