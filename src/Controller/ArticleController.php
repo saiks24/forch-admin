@@ -62,12 +62,17 @@ class ArticleController extends AbstractController
     public function getArticle(string $articleName)
     {
         $em = $this->getDoctrine()->getManager();
+
+        /** @var Article $needleArticle */
         $needleArticle = $em->getRepository(Article::class)
             ->findOneBy(['name' => $articleName]);
 
         if($needleArticle === null) {
             return new Response('Страница отсутвует',404);
         }
+
+        $articleParsedText = $this->replaceMarkDownToHtml($needleArticle->getText());
+        $needleArticle->setText($articleParsedText);
 
         return $this->render('article_index.html.twig',['article'=>$needleArticle]);
     }
@@ -203,5 +208,25 @@ class ArticleController extends AbstractController
             }
         }
         return true;
+    }
+
+    /**
+     * @param string $inputText
+     * @return string
+     */
+    private function replaceMarkDownToHtml(string $inputText): string
+    {
+        if(empty($inputText)) {
+            return $inputText;
+        }
+
+        $inputText = preg_replace('#\*\*(.*?)\*\*#','<b>\\1</b>',$inputText);
+        $inputText = preg_replace('#\\\\\\\\(.*)\\\\\\\\#','<i>$1</i>',$inputText);
+        $inputText = preg_replace(
+            '#\(\((.*?) (.*?)\)\)#',
+            '<a href="/$1">$2</a>',
+            $inputText
+        );
+        return $inputText;
     }
 }
