@@ -1,5 +1,6 @@
 **Install**
 -------------
+Start
 ```docker-compose up -d
 docker exec -t {php-fpm-container-id} /bin/bash
 composer install 
