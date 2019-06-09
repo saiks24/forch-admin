@@ -7,7 +7,7 @@
     {% if allArticles %}
         {% for article in allArticles %}
             <li>
-                <a href="/{{ article.getName()|e }}">{{ article.getName()|e }}</a>
+                <a href="/{{ article.getName()|e }}">{{ article.getTitle()|e }}</a>
                 <a href="{{ article.getName()|e }}/edit">Редактировать</a>
                 /
                 <a href="{{ article.getName()|e }}/delete">Удалить</a>
