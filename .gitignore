@@ -6,6 +6,8 @@
 /public/bundles/
 /var/
 /vendor/
+/app/vendor/
+/app/var/
 ###< symfony/framework-bundle ###
 
 ###> symfony/web-server-bundle ###
