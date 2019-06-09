@@ -37,6 +37,14 @@ class ArticleController extends AbstractController
             return $this->redirect('/add');
         }
 
+        if($this->isPageAlreadyExistByName($request->get('name'))) {
+            $this->addFlash(
+                'warning',
+                'Страница с именем: ' . $request->get('name') . ' уже существует'
+            );
+            return $this->redirect('/add');
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $newArticle = new Article();
@@ -132,7 +140,7 @@ class ArticleController extends AbstractController
      */
     public function editArticle(Request $request): Response
     {
-        if($this->isInRequestSetAllNeedleFields($request,['id','text','title','name']) === false) {
+        if($this->isInRequestSetAllNeedleFields($request,['id','text','title']) === false) {
             $this->addFlash(
                 'warning',
                 'Не заполнены все нужные поля'
@@ -149,9 +157,9 @@ class ArticleController extends AbstractController
         if($needleArticle === null) {
             return new Response('Страница отсутвует',404);
         }
-        $needleArticle->setTitle($request->get('title'))
-            ->setText($request->get('text'))
-            ->setName($request->get('name'));
+        $needleArticle
+            ->setTitle($request->get('title'))
+            ->setText($request->get('text'));
 
         $em->persist($needleArticle);
         $em->flush();
@@ -230,5 +238,12 @@ class ArticleController extends AbstractController
             $inputText
         );
         return $inputText;
+    }
+
+    private function isPageAlreadyExistByName(string $pageName): bool
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(Article::class);
+        return $repository->findOneBy(['name' => $pageName]) !== null;
     }
 }
