@@ -2,7 +2,14 @@
 -------------------
 ```
 /app - project code
+
+/app/src/Controller/ArticleController - base app controller
+/app/src/Entity/Artice - base app model (dto)
+/app/src/Entity/Article - base app repository
+/app/templates - views of app
+/app/config - app configuration
 /app/var - tmp folder
+
 /docker - files for docker start
 docker-compose.yml - docker-compose instruction
 ```
