@@ -10,7 +10,8 @@ docker-compose.yml - docker-compose instruction
 **Install**
 -------------
 Start
-```docker-compose up -d
+```
+docker-compose up -d
 docker exec -ti {php-fpm-container-id} /bin/bash
 composer install 
 ```
