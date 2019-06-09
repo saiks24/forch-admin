@@ -2,8 +2,6 @@ version: '2'
 services:
   php:
     build: ./docker/php/
-    environment:
-      TIMEZONE: Europe/Kiev
     volumes:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini:ro
       - ./app:/var/www/app
@@ -22,6 +20,7 @@ services:
   db:
       image: mysql:5.7
       environment:
+        MYSQL_ROOT_PASSWORD: root
         MYSQL_DATABASE: wiki
         MYSQL_USER: root
         MYSQL_PASSWORD: root

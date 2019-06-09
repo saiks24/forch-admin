@@ -3,6 +3,9 @@
 ```docker-compose up -d
 docker exec -t {php-fpm-container-id} /bin/bash
 composer install 
+```
+Doctrine init
+```
 php bin/console cac:cle
 php bin/console doctrine:migrations:migrate
 ```
