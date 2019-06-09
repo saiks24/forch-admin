@@ -1,3 +1,12 @@
+**Code structure**
+-------------------
+```
+/app - project code
+/app/var - tmp folder
+/docker - files for docker start
+docker-compose.yml - docker-compose instruction
+```
+
 **Install**
 -------------
 Start
